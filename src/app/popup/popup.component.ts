@@ -11,6 +11,9 @@ import { AuthService } from '../services/auth.service'; // Adjust path as needed
   styleUrls: ['./popup.component.css'],
 })
 export class PopupComponent {
+handlePasswordRecoverySubmit($event: SubmitEvent) {
+throw new Error('Method not implemented.');
+}
   isPopupVisible = false;
   isLoginFormVisible = true;
   isRegisterFormVisible = false;
