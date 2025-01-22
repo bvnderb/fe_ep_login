@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./popup.component.css'],
 })
 export class PopupComponent {
-
   isPopupVisible = false;
   isLoginFormVisible = true;
   isRegisterFormVisible = false;
@@ -81,9 +80,13 @@ export class PopupComponent {
 
   // handle register submit
   handleRegisterSubmit() {
-    
-
-    if (!this.firstName || !this.lastName || !this.email || !this.password || !this.confirmPassword) {
+    if (
+      !this.firstName ||
+      !this.lastName ||
+      !this.email ||
+      !this.password ||
+      !this.confirmPassword
+    ) {
       console.log('Validation failed: Missing required fields');
       this.errorMessage = 'All fields are required.';
       return;
@@ -112,7 +115,7 @@ export class PopupComponent {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
-      password: this.password
+      password: this.password,
     });
 
     alert('Registration successful!');
@@ -122,7 +125,7 @@ export class PopupComponent {
   }
 
   // helper function to validate the email format
-  private isValidEmail (email: string): boolean {
+  private isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
@@ -134,13 +137,19 @@ export class PopupComponent {
     this.email = '';
     this.password = '';
     this.confirmPassword = '';
-
-    
   }
 
   // handle password recovery
   handlePasswordRecoverySubmit() {
-
+    if (!this.isValidEmail(this.email)) {
+      console.log('Validation failed: Invalid email');
+      this.errorMessage = 'Please enter a valid email address.';
+      return;
     }
+    console.log('Recovery email send to:', {
+      email: this.email
+    });
 
+    this.resetForm();
   }
+}
