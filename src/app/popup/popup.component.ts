@@ -60,7 +60,7 @@ export class PopupComponent {
     this.isPasswordFormVisible = true;
   }
 
-  // Handle login form submission
+  // handle login form submission
   handleLoginSubmit() {
     if (!this.email || !this.password) {
       this.errorMessage = 'Both email and password are required.';
@@ -140,7 +140,7 @@ export class PopupComponent {
 
   // handle password recovery
   handlePasswordRecoverySubmit() {
-    throw new Error('Method not implemented.');
+
     }
 
   }
