@@ -1,6 +1,7 @@
-import { Component, HostListener, Signal, signal, effect } from '@angular/core';
+import { Component, HostListener, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-popup',
@@ -22,6 +23,12 @@ export class PopupComponent {
   password: string = '';
   confirmPassword: string = '';
   errorMessage: string | null = null;
+
+  displayUsers = signal<any[]>([]);
+
+  constructor(private authService: AuthService) {}
+
+
 
   // Show the login popup
   showLoginPopup() {
@@ -146,12 +153,27 @@ export class PopupComponent {
     }
 
     console.log('All validations passed');
+
+    let result = this.authService.registerUser(
+      this.email,
+      this.password,
+      this.firstName,
+      this.lastName,
+    );
+
+
+
+    console.log (result);
+
+
     console.log('Registration successful:', {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
       password: this.password,
     });
+
+
 
     alert('Registration successful!');
     this.resetForm();
@@ -187,4 +209,13 @@ export class PopupComponent {
 
     this.resetForm();
   }
+
+   // fetch all users wiht ngonit
+   ngOnInit() {
+    this.authService.getAllUser().then((users) => {
+      console.log(users);
+      this.displayUsers.set(users);
+    })
+  }
+
 }
