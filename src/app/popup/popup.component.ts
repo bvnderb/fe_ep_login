@@ -1,7 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../services/auth.service'; // Adjust path as needed
 
 @Component({
   selector: 'app-popup',
@@ -11,19 +10,18 @@ import { AuthService } from '../services/auth.service'; // Adjust path as needed
   styleUrls: ['./popup.component.css'],
 })
 export class PopupComponent {
-handlePasswordRecoverySubmit($event: SubmitEvent) {
-throw new Error('Method not implemented.');
-}
+
   isPopupVisible = false;
   isLoginFormVisible = true;
   isRegisterFormVisible = false;
   isPasswordFormVisible = false;
 
+  firstName: string = '';
+  lastName: string = '';
   email: string = '';
   password: string = '';
+  confirmPassword: string = '';
   errorMessage: string | null = null;
-
-  constructor(private authService: AuthService) {}
 
   // Show the login popup
   showLoginPopup() {
@@ -63,24 +61,86 @@ throw new Error('Method not implemented.');
   }
 
   // Handle login form submission
-  handleLoginSubmit(event: Event) {
-    event.preventDefault();
+  handleLoginSubmit() {
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Both email and password are required.';
+      return;
+    }
 
-    const payload = {
-      email: this.email,
-      password: this.password,
-    };
+    if (this.password.length < 6) {
+      this.errorMessage = 'Password must be at least 6 characters long.';
+      return;
+    }
 
-    this.authService.login(payload).subscribe({
-      next: (response) => {
-        console.log('Login successful:', response);
-        localStorage.setItem('token', response.token);
-        this.closePopup();
-      },
-      error: (error) => {
-        console.error('Login failed:', error);
-        this.errorMessage = 'Invalid email or password.';
-      },
-    });
+    console.log('Email:', this.email);
+    console.log('Password:', this.password);
+
+    this.errorMessage = null;
+    alert('Login successful!');
   }
-}
+
+  // handle register submit
+  handleRegisterSubmit() {
+    
+
+    if (!this.firstName || !this.lastName || !this.email || !this.password || !this.confirmPassword) {
+      console.log('Validation failed: Missing required fields');
+      this.errorMessage = 'All fields are required.';
+      return;
+    }
+
+    if (!this.isValidEmail(this.email)) {
+      console.log('Validation failed: Invalid email');
+      this.errorMessage = 'Please enter a valid email address.';
+      return;
+    }
+
+    if (this.password.length < 6) {
+      console.log('Validation failed: Password too short');
+      this.errorMessage = 'Password must be at least 6 characters long.';
+      return;
+    }
+
+    if (this.password !== this.confirmPassword) {
+      console.log('Validation failed: Passwords do not match');
+      this.errorMessage = 'Passwords do not match.';
+      return;
+    }
+
+    console.log('All validations passed');
+    console.log('Registration successful:', {
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      password: this.password
+    });
+
+    alert('Registration successful!');
+    this.resetForm();
+
+    console.log('Form submitted!');
+  }
+
+  // helper function to validate the email format
+  private isValidEmail (email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  // resets the form fields
+  private resetForm(): void {
+    this.firstName = '';
+    this.lastName = '';
+    this.email = '';
+    this.password = '';
+    this.confirmPassword = '';
+
+    
+  }
+
+  // handle password recovery
+  handlePasswordRecoverySubmit() {
+    throw new Error('Method not implemented.');
+    }
+
+  }
