@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class RegisterService {
 
 urlApi = 'http://localhost:8000/api';
 
